@@ -35,6 +35,80 @@ http_archive(
     urls = ["https://github.com/google/googletest/archive/master.zip"],
 )
 
+# Grpc
+git_repository(
+    name = "com_github_grpc_grpc",
+    remote = "https://github.com/grpc/grpc.git",
+    init_submodules = 0,
+    tag = "v1.8.4",
+)
+
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+grpc_deps()
+
+bind(
+  name = "grpc_cpp_plugin",
+  actual = "@com_github_grpc_grpc//:grpc_cpp_plugin",
+)
+
+# Protobuf
+bind(
+    name = "protobuf",
+    actual = "@submodule_protobuf//:protobuf",
+)
+
+bind(
+    name = "protobuf_clib",
+    actual = "@submodule_protobuf//:protoc_lib",
+)
+
+bind(
+    name = "protocol_compiler",
+    actual = "@submodule_protobuf//:protoc",
+)
+
+new_local_repository(
+    name = "submodule_protobuf",
+    build_file = "third_party/protobuf/BUILD",
+    path = "third_party/protobuf",
+)
+
+#load("//tools:build_config.bzl", "cc_proto_library")
+#load("@com_github_grpc_grpc//bazel:grpc_build_system.bzl", "grpc_proto_library")
+
+# Google APIs
+new_http_archive(
+    name = "com_google_apis",
+    strip_prefix = "googleapis-master",
+    urls = ["https://github.com/googleapis/googleapis/archive/master.zip"],
+    build_file_content =
+"""
+load("@com_github_grpc_grpc//bazel:grpc_build_system.bzl", "grpc_proto_library")
+
+proto_library(
+  name = "tracing_proto",
+  srcs = [
+    "google/devtools/cloudtrace/v2/tracing.proto",
+    "google/devtools/cloudtrace/v2/trace.proto",
+    "google/api/annotations.proto",
+    "google/api/http.proto",
+    "google/rpc/status.proto",
+  ],
+  deps = ["@submodule_protobuf//:any_proto",
+          "@submodule_protobuf//:descriptor_proto",
+          "@submodule_protobuf//:timestamp_proto",
+          "@submodule_protobuf//:wrappers_proto",
+          "@submodule_protobuf//:empty_proto",],
+)
+
+grpc_proto_library(
+    name = "http_proto",
+    srcs = ["google/api/http.proto",],
+    use_external = True,
+)
+"""
+)
+
 # Google Benchmark library.
 # Adapted from cctz's WORKSPACE.
 # Upstream support for bazel is tracked in
