@@ -14,10 +14,10 @@
 
 #include "opencensus/exporters/trace/stdout_exporter.h"
 
+#include "absl/time/clock.h"
 #include "benchmark/benchmark.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-#include "absl/time/clock.h"
 #include "opencensus/trace/exporter/local_span_store.h"
 #include "opencensus/trace/span.h"
 

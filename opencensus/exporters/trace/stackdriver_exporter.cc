@@ -14,11 +14,14 @@
 
 #include "opencensus/exporters/trace/stackdriver_exporter.h"
 
+#include <cstdint>
 #include <iostream>
 
 #include "absl/base/macros.h"
 #include "absl/memory/memory.h"
 #include "absl/strings/str_cat.h"
+#include "absl/time/time.h"
+#include "absl/time/clock.h"
 
 using grpc::ClientContext;
 using grpc::Status;
@@ -37,13 +40,13 @@ namespace {
 
 gpr_timespec ConvertToTimespec(absl::Time time) {
   gpr_timespec g_time;
-  int64 secs = absl::ToUnixSeconds(time);
+  int64_t secs = absl::ToUnixSeconds(time);
   g_time.tv_sec = secs;
-  g_time.tv_nsec = (time - base::FromUnixSeconds(secs)) / base::Nanoseconds(1);
+  g_time.tv_nsec = (time - absl::FromUnixSeconds(secs)) / absl::Nanoseconds(1);
   return g_time;
 }
 
-bool Validate(const google::protobuf::Timestamp& t) {
+bool Validate(const ::google::protobuf::Timestamp& t) {
   const auto sec = t.seconds();
   const auto ns = t.nanos();
   // sec must be [0001-01-01T00:00:00Z, 9999-12-31T23:59:59.999999999Z]
@@ -56,10 +59,10 @@ bool Validate(const google::protobuf::Timestamp& t) {
   return true;
 }
 
-bool EncodeTimestampProto(absl::Time t, google::protobuf::Timestamp* proto) {
-  const int64 s = base::ToUnixSeconds(t);
+bool EncodeTimestampProto(absl::Time t, ::google::protobuf::Timestamp* proto) {
+  const int64_t s = absl::ToUnixSeconds(t);
   proto->set_seconds(s);
-  proto->set_nanos((t - base::FromUnixSeconds(s)) / base::Nanoseconds(1));
+  proto->set_nanos((t - absl::FromUnixSeconds(s)) / absl::Nanoseconds(1));
   return Validate(*proto);
 }
 
@@ -67,10 +70,11 @@ void SetTruncatableString(
     absl::string_view str, size_t max_len,
     ::google::devtools::cloudtrace::v2::TruncatableString* t_str) {
   if (str.size() > max_len) {
-    t_str->set_value(str.substr(0, max_len));
+    auto truncated_str = str.substr(0, max_len);
+    t_str->set_value(truncated_str.data(), truncated_str.length());
     t_str->set_truncated_byte_count(str.size() - max_len);
   } else {
-    t_str->set_value(str);
+    t_str->set_value(str.data(), str.length());
     t_str->set_truncated_byte_count(0);
   }
 }
@@ -106,9 +110,9 @@ ConvertMessageType(::opencensus::trace::exporter::MessageEvent::Type type) {
 // oc:google-replace-begin(std::string vs string problem)
 // TODO: Fix this to work in OSS where we need std::string.
 using AttributeMap =
-    ::proto2::Map<::string, ::google::devtools::cloudtrace::v2::AttributeValue>;
+    ::google::protobuf::Map<std::string, ::google::devtools::cloudtrace::v2::AttributeValue>;
 /* oc:oss-replace with
-using AttributeMap = ::proto2::Map<std::string,
+using AttributeMap = ::google::protobuf::Map<std::string,
     ::google::devtools::cloudtrace::v2::AttributeValue>;
 oc:oss-replace-end */
 void PopulateAttributes(
@@ -232,7 +236,7 @@ void ConvertSpans(
 
     // The status of the span.
     to_span->mutable_status()->set_code(
-        static_cast<int32>(from_span.status().CanonicalCode()));
+        static_cast<int32_t>(from_span.status().CanonicalCode()));
     to_span->mutable_status()->set_message(from_span.status().error_message());
   }
 }

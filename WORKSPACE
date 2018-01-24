@@ -63,24 +63,18 @@ bind(
 # Protobuf
 bind(
     name = "protobuf",
-    actual = "@submodule_protobuf//:protobuf",
+    actual = "@com_google_protobuf//:protobuf",
 )
 
 bind(
     name = "protobuf_clib",
-    actual = "@submodule_protobuf//:protoc_lib",
+    actual = "@com_google_protobuf//:protoc_lib",
 )
 
 bind(
     name = "protocol_compiler",
-    actual = "@submodule_protobuf//:protoc",
+    actual = "@com_google_protobuf//:protoc",
 )
-
-#new_local_repository(
-#    name = "submodule_protobuf",
-#    build_file = "third_party/protobuf/BUILD",
-#    path = "third_party/protobuf",
-#)
 
 # Google APIs
 #new_http_archive(
@@ -100,11 +94,11 @@ bind(
 #    "google/api/http.proto",
 #    "google/rpc/status.proto",
 #  ],
-#  deps = ["@submodule_protobuf//:any_proto",
-#          "@submodule_protobuf//:descriptor_proto",
-#          "@submodule_protobuf//:timestamp_proto",
-#          "@submodule_protobuf//:wrappers_proto",
-#          "@submodule_protobuf//:empty_proto",],
+#  deps = ["@com_google_protobuf//:any_proto",
+#          "@com_google_protobuf//:descriptor_proto",
+#          "@com_google_protobuf//:timestamp_proto",
+#          "@com_google_protobuf//:wrappers_proto",
+#          "@com_google_protobuf//:empty_proto",],
 #)
 #
 #grpc_proto_library(

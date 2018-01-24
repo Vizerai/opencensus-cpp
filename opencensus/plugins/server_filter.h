@@ -16,9 +16,9 @@
 #define OPENCENSUS_PLUGINS_SERVER_FILTER_H_
 
 #include "absl/strings/string_view.h"
+#include "include/grpc/grpc_security.h"
 #include "opencensus/plugins/channel_filter.h"
 #include "opencensus/plugins/filter.h"
-#include "include/grpc/grpc_security.h"
 
 namespace opencensus {
 

@@ -19,8 +19,8 @@
 #include <string>
 #include <vector>
 
+#include "include/grpc++/grpc++.h"
 #include "google/devtools/cloudtrace/v2/tracing.grpc.pb.h"
-#include "net/grpc/public/include/grpc++/grpc++.h"
 #include "opencensus/trace/exporter/span_data.h"
 #include "opencensus/trace/exporter/span_exporter.h"
 
@@ -50,7 +50,7 @@ class StackdriverExporter
   class TraceClient {
    public:
     TraceClient(const std::shared_ptr<grpc::Channel>& channel)
-        : stub_(google::devtools::cloudtrace::v2::grpc::TraceService::NewStub(
+        : stub_(::google::devtools::cloudtrace::v2::TraceService::NewStub(
               channel)) {}
 
     // Packages a batch of spans into a single request and writes it to
@@ -60,7 +60,7 @@ class StackdriverExporter
             request);
 
    private:
-    std::unique_ptr<google::devtools::cloudtrace::v2::grpc::TraceService::Stub>
+    std::unique_ptr<::google::devtools::cloudtrace::v2::TraceService::Stub>
         stub_;
   };
 

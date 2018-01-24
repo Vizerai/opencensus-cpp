@@ -14,8 +14,8 @@
 
 #include "opencensus/exporters/trace/stackdriver_exporter.h"
 
-#include "net/grpc/public/include/grpc++/grpc++.h"
 #include "benchmark/benchmark.h"
+#include "include/grpc++/grpc++.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 // #include "net/grpc/internal/test/core/util/test_init_google.h"

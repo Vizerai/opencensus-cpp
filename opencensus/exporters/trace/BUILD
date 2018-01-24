@@ -41,19 +41,18 @@ cc_library(
 cc_library(
     name = "stackdriver_exporter",
     srcs = [
-        #"stackdriver_exporter.cc",
-        "stdout_exporter.cc",
+        "stackdriver_exporter.cc",
     ],
     hdrs = [
-        #"stackdriver_exporter.h",
-        "stdout_exporter.h",
+        "stackdriver_exporter.h",
     ],
     deps = [
-        "@com_google_apis//:http_proto",
         "@com_github_grpc_grpc//:grpc++",
         "@com_google_absl//absl/base:core_headers",
         "@com_google_absl//absl/memory",
         "@com_google_absl//absl/strings",
+        "@com_google_protobuf//:protobuf",
+        "//google/devtools/cloudtrace/v2:tracing_proto_lib",
         "//opencensus/trace",
     ],
 )
@@ -79,7 +78,8 @@ cc_test(
 #    deps = [
 #        ":stackdriver_exporter",
 #        "@com_github_grpc_grpc//:grpc++",
-#        "//opencensus/trace",
 #        "@com_google_googletest//:gtest_main",
+#        "@com_google_benchmark//:benchmark",
+#        "//opencensus/trace",
 #    ],
 #)
