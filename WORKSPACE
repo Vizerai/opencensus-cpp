@@ -82,6 +82,39 @@ bind(
 #    path = "third_party/protobuf",
 #)
 
+# Google APIs
+#new_http_archive(
+#    name = "com_google_apis",
+#    strip_prefix = "googleapis-master",
+#    urls = ["https://github.com/googleapis/googleapis/archive/master.zip"],
+#    build_file_content =
+#"""
+#load("@com_github_grpc_grpc//bazel:grpc_build_system.bzl", "grpc_proto_library")
+#
+#proto_library(
+#  name = "tracing_proto",
+#  srcs = [
+#    "google/devtools/cloudtrace/v2/tracing.proto",
+#    "google/devtools/cloudtrace/v2/trace.proto",
+#    "google/api/annotations.proto",
+#    "google/api/http.proto",
+#    "google/rpc/status.proto",
+#  ],
+#  deps = ["@submodule_protobuf//:any_proto",
+#          "@submodule_protobuf//:descriptor_proto",
+#          "@submodule_protobuf//:timestamp_proto",
+#          "@submodule_protobuf//:wrappers_proto",
+#          "@submodule_protobuf//:empty_proto",],
+#)
+#
+#grpc_proto_library(
+#    name = "http_proto",
+#    srcs = ["google/api/http.proto",],
+#    use_external = True,
+#)
+#"""
+#)
+
 # Google Benchmark library.
 # Adapted from cctz's WORKSPACE.
 # Upstream support for bazel is tracked in
