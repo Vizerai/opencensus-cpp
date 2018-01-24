@@ -35,6 +35,53 @@ http_archive(
     urls = ["https://github.com/google/googletest/archive/master.zip"],
 )
 
+# Grpc
+http_archive(
+    name = "com_github_grpc_grpc",
+    urls = ["https://github.com/grpc/grpc/archive/master.zip"],
+    strip_prefix = "grpc-master"
+)
+
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+grpc_deps()
+
+bind(
+    name = "grpc++",
+    actual = "@com_github_grpc_grpc//:grpc++",
+)
+
+bind(
+    name = "grpc++_codegen_proto",
+    actual = "@com_github_grpc_grpc//:grpc++_codegen_proto",
+)
+
+bind(
+    name = "grpc_cpp_plugin",
+    actual = "@com_github_grpc_grpc//:grpc_cpp_plugin",
+)
+
+# Protobuf
+bind(
+    name = "protobuf",
+    actual = "@submodule_protobuf//:protobuf",
+)
+
+bind(
+    name = "protobuf_clib",
+    actual = "@submodule_protobuf//:protoc_lib",
+)
+
+bind(
+    name = "protocol_compiler",
+    actual = "@submodule_protobuf//:protoc",
+)
+
+#new_local_repository(
+#    name = "submodule_protobuf",
+#    build_file = "third_party/protobuf/BUILD",
+#    path = "third_party/protobuf",
+#)
+
 # Google Benchmark library.
 # Adapted from cctz's WORKSPACE.
 # Upstream support for bazel is tracked in
