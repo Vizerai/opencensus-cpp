@@ -84,9 +84,10 @@ bind(
 #    build_file_content =
 #"""
 #load("@com_github_grpc_grpc//bazel:grpc_build_system.bzl", "grpc_proto_library")
+#load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 #
 #proto_library(
-#  name = "tracing_proto",
+#  name = "tracing_proto_lib",
 #  srcs = [
 #    "google/devtools/cloudtrace/v2/tracing.proto",
 #    "google/devtools/cloudtrace/v2/trace.proto",
@@ -94,16 +95,19 @@ bind(
 #    "google/api/http.proto",
 #    "google/rpc/status.proto",
 #  ],
-#  deps = ["@com_google_protobuf//:any_proto",
-#          "@com_google_protobuf//:descriptor_proto",
-#          "@com_google_protobuf//:timestamp_proto",
-#          "@com_google_protobuf//:wrappers_proto",
-#          "@com_google_protobuf//:empty_proto",],
+#  deps = [
+#    "@com_google_protobuf//:any.proto",
+#    "@com_google_protobuf//:descriptor.proto",
+#  ],
 #)
 #
-#grpc_proto_library(
-#    name = "http_proto",
-#    srcs = ["google/api/http.proto",],
+#cc_grpc_library(
+#    name = "test_lib",
+#    srcs = [],
+#    deps = [":tracing_proto_lib",],
+#    proto_only = False,
+#    well_known_protos = True,
+#    generate_mock = False,
 #    use_external = True,
 #)
 #"""
