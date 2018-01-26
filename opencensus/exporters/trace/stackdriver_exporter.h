@@ -19,8 +19,8 @@
 #include <string>
 #include <vector>
 
-#include "include/grpc++/grpc++.h"
 #include "google/devtools/cloudtrace/v2/tracing.grpc.pb.h"
+#include "include/grpc++/grpc++.h"
 #include "opencensus/trace/exporter/span_data.h"
 #include "opencensus/trace/exporter/span_exporter.h"
 

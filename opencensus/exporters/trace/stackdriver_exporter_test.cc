@@ -15,9 +15,9 @@
 #include "opencensus/exporters/trace/stackdriver_exporter.h"
 
 #include "benchmark/benchmark.h"
-#include "include/grpc++/grpc++.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "include/grpc++/grpc++.h"
 // #include "net/grpc/internal/test/core/util/test_init_google.h"
 #include "opencensus/trace/exporter/local_span_store.h"
 #include "opencensus/trace/span.h"

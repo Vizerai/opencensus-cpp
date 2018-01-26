@@ -20,8 +20,8 @@
 #include "absl/base/macros.h"
 #include "absl/memory/memory.h"
 #include "absl/strings/str_cat.h"
-#include "absl/time/time.h"
 #include "absl/time/clock.h"
+#include "absl/time/time.h"
 
 using grpc::ClientContext;
 using grpc::Status;
@@ -110,7 +110,8 @@ ConvertMessageType(::opencensus::trace::exporter::MessageEvent::Type type) {
 // oc:google-replace-begin(std::string vs string problem)
 // TODO: Fix this to work in OSS where we need std::string.
 using AttributeMap =
-    ::google::protobuf::Map<std::string, ::google::devtools::cloudtrace::v2::AttributeValue>;
+    ::google::protobuf::Map<std::string,
+                            ::google::devtools::cloudtrace::v2::AttributeValue>;
 /* oc:oss-replace with
 using AttributeMap = ::google::protobuf::Map<std::string,
     ::google::devtools::cloudtrace::v2::AttributeValue>;

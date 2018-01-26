@@ -1,2 +1,0 @@
-build --define=grpc_no_ares=true
-build --define=use_grpc_plugin=true
