@@ -144,7 +144,7 @@ bool SpanImpl::HasEnded() const {
 void SpanImpl::EndWithLatencyForTesting(absl::Duration latency) {
   absl::MutexLock l(&mu_);
   has_ended_ = true;
-  end_time_ = start_time + latency;
+  end_time_ = start_time_ + latency;
 }
 
 void SpanImpl::EndWithTime(absl::Time end_time) {
